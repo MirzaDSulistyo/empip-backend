@@ -37,7 +37,8 @@ static listAll = async (req: Request, res: Response) => {
   //Get users from database
   const userRepository = getRepository(User);
   const users = await userRepository.find({
-    select: ["id", "email", "role", "createdAt"] //We dont want to send the passwords on response
+    select: ["id", "name", "email", "role", "createdAt"], //We dont want to send the passwords on response
+    relations: ["companies"]
   });
 
   //Send the users object

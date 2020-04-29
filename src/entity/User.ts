@@ -4,10 +4,12 @@ import {
     Column,
     Unique,
     CreateDateColumn,
+    OneToMany,
     UpdateDateColumn
 } from "typeorm";
 import { Length, IsNotEmpty, IsEmail } from "class-validator";
 import * as bcrypt from "bcryptjs";
+import { Company } from "./Company";
   
 @Entity()
 @Unique(["email"])
@@ -20,12 +22,19 @@ export class User {
   email: string;
 
   @Column()
+  @Length(4, 50)
+  name: string;
+
+  @Column()
   @Length(4, 100)
   password: string;
 
   @Column()
   @IsNotEmpty()
   role: string;
+
+  @OneToMany(type => Company, company => company.user)
+  companies: Company[];
 
   @Column()
   @CreateDateColumn()
