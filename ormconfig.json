@@ -4,9 +4,10 @@
    "port": 5432,
    "username": "mirza",
    "password": "123456",
-   "database": "test",
-   "synchronize": true,
-   "logging": false,
+   "database": "pipip",
+   "synchronize": false,
+   "migrationsRun": true,
+   "logging": true,
    "entities": [
       "src/entity/**/*.ts"
    ],
