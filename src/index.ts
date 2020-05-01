@@ -8,6 +8,16 @@ import {Request, Response} from "express";
 //import {Routes} from "./route/routes";
 import {User} from "./entity/User";
 import routes from "./route";
+import { Company } from "./entity/Company";
+
+declare global {
+    namespace Express {
+      interface Request {
+        userId?: string,
+        com?: Company
+      }
+    }
+  }
 
 createConnection().then(async connection => {
 

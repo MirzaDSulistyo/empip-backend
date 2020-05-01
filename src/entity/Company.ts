@@ -5,11 +5,12 @@ import {
     Unique,
     CreateDateColumn,
     ManyToOne,
+    OneToMany,
     UpdateDateColumn
 } from "typeorm";
-import { Length, IsNotEmpty, IsEmail, IsString, IsPhoneNumber } from "class-validator";
-import * as bcrypt from "bcryptjs";
+import { Length, IsNotEmpty, IsEmail, IsPhoneNumber } from "class-validator";
 import { User } from "../entity/User";
+import { Product } from "./Product";
   
 @Entity()
 @Unique(["name"])
@@ -19,12 +20,12 @@ export class Company {
 
   @Column()
   @Length(4, 50)
-  @IsString()
+  @IsNotEmpty()
   name: string;
 
   @Column()
   @Length(4, 50)
-  @IsString()
+  @IsNotEmpty()
   description: string;
 
   @Column()
@@ -49,6 +50,9 @@ export class Company {
 
   @ManyToOne(type => User, user => user.companies)
   user: User;
+
+  @OneToMany(type => Product, product => product.company)
+  products: Product[];
 
   @Column()
   @CreateDateColumn()

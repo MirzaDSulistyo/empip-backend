@@ -19,19 +19,19 @@ import { Router } from "express";
   );
 
   //Create a new user
-  router.post("/", textForm.none(), [checkJwt, checkRole(["ADMIN"])], UserController.newUser);
+  router.post("/", textForm.none(), [checkJwt, checkRole(["OWNER"])], UserController.newUser);
 
   //Edit one user
   router.put(
     "/:id([0-9]+)",
-    [checkJwt, checkRole(["ADMIN"])],
+    [checkJwt, checkRole(["OWNER"])],
     UserController.editUser
   );
 
   //Delete one user
   router.delete(
     "/:id([0-9]+)",
-    [checkJwt, checkRole(["ADMIN"])],
+    [checkJwt, checkRole(["OWNER"])],
     UserController.deleteUser
   );
 
