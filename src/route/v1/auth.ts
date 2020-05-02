@@ -1,6 +1,6 @@
 import { Router } from "express";
-import AuthController from "../controller/AuthController";
-import { checkJwt } from "../middleware/checkJwt";
+import AuthController from "../../controller/v1/AuthController";
+import { checkJwt } from "../../middleware/checkJwt";
 import * as multer from "multer";
 
 var textForm = multer()

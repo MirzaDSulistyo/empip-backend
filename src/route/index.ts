@@ -1,8 +1,8 @@
 import { Router, Request, Response } from "express";
-import auth from "./auth";
-import user from "./user";
-import product from "./product";
-import com from "./company";
+import auth from "./v1/auth";
+import user from "./v1/user";
+import product from "./v1/product";
+import com from "./v1/company";
 
 const routes = Router();
 

@@ -1,9 +1,9 @@
 import { Router } from "express";
-  import { checkJwt } from "../middleware/checkJwt";
-  import { checkRole } from "../middleware/checkRole";
-  import { checkCompany } from "../middleware/checkCompany";
+  import { checkJwt } from "../../middleware/checkJwt";
+  import { checkRole } from "../../middleware/checkRole";
+  import { checkCompany } from "../../middleware/checkCompany";
   import * as multer from "multer";
-import { ProductController } from "../controller/ProductController";
+import { ProductController } from "../../controller/v1/ProductController";
 
   var textForm = multer()
 

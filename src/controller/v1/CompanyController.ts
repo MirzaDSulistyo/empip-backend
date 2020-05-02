@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { getRepository, getConnection } from "typeorm";
 import { validate } from "class-validator";
-import { Company } from "../entity/Company";
-import { User } from "../entity/User";
+import { Company } from "../../entity/Company";
+import { User } from "../../entity/User";
 
 export class CompanyController {
     
