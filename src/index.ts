@@ -5,7 +5,6 @@ import * as bodyParser from "body-parser";
 import * as helmet from "helmet";
 import * as cors from "cors";
 import {Request, Response} from "express";
-//import {Routes} from "./route/routes";
 import {User} from "./entity/User";
 import routes from "./route";
 import { Company } from "./entity/Company";
@@ -44,7 +43,7 @@ createConnection().then(async connection => {
     });*/
 
     //Set all routes from routes folder
-    app.use("/", routes);
+    app.use("/api/v1", routes);
 
     // setup express app here
     // ...
@@ -64,6 +63,6 @@ createConnection().then(async connection => {
         age: 24
     }));*/
 
-    console.log("Express server has started on port 3000. Open http://localhost:3000/users to see results");
+    console.log("Express server has started on port 3000. Open http://localhost:3000/api/v1/user to see results");
 
 }).catch(error => console.log(error));

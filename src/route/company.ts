@@ -1,39 +1,38 @@
 import { Router } from "express";
   import { checkJwt } from "../middleware/checkJwt";
   import { checkRole } from "../middleware/checkRole";
-  import { checkCompany } from "../middleware/checkCompany";
   import * as multer from "multer";
-import { ProductController } from "../controller/ProductController";
+import { CompanyController } from "../controller/CompanyController";
 
   var textForm = multer()
 
   const router = Router();
 
-  //Get all products
-  router.get("/", [checkJwt, checkRole(["ADMIN", "OWNER"]), checkCompany()], ProductController.all);
+  //Get all data
+  router.get("/", [checkJwt, checkRole(["ADMIN", "OWNER"])], CompanyController.all);
 
   // Get one data
   router.get(
     "/:id([0-9]+)",
     [checkJwt, checkRole(["ADMIN", "OWNER"])],
-    ProductController.detail
+    CompanyController.detail
   );
 
-  //Create a new product
-  router.post("/", textForm.none(), [checkJwt, checkRole(["OWNER"]), checkCompany()], ProductController.save);
+  //Create a new company
+  router.post("/", textForm.none(), [checkJwt, checkRole(["OWNER"])], CompanyController.save);
 
   //Edit one user
   router.put(
     "/:id([0-9]+)",
     [checkJwt, checkRole(["OWNER"])],
-    ProductController.update
+    CompanyController.update
   );
 
   //Delete one user
   router.delete(
     "/:id([0-9]+)",
     [checkJwt, checkRole(["OWNER"])],
-    ProductController.delete
+    CompanyController.delete
   );
 
   export default router;

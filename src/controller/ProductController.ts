@@ -4,7 +4,8 @@ import { validate } from "class-validator";
 import { Product } from "../entity/Product";
 
 export class ProductController {
-    static listAll = async (req: Request, res: Response) => {
+    
+    static all = async (req: Request, res: Response) => {
         //Get users from database
         const productRepository = getRepository(Product);
 
@@ -33,7 +34,21 @@ export class ProductController {
         }
     };
 
-    static newProduct = async (req: Request, res: Response) => {
+    static detail = async (req: Request, res: Response) => {
+        //Get the ID from the url
+        const id: string = req.params.id;
+    
+        //Get the user from database
+        const repository = getRepository(Product);
+        try {
+          const data = await repository.findOneOrFail(id);
+          res.send({status: 200, data: data});
+        } catch (error) {
+          res.status(404).send({status: 404, message: "Product not found."});
+        }
+    };
+
+    static save = async (req: Request, res: Response) => {
         //Get parameters from the body
         let { name, descriptions, price, stock } = req.body;
         let product = new Product();
@@ -60,6 +75,65 @@ export class ProductController {
         }
     
         //If all ok, send 201 response
-        res.status(201).send({status: 400, message: "User created", data: product});
+        res.status(201).send({status: 201, message: "Product created", data: product});
+    };
+
+    static update = async (req: Request, res: Response) => {
+        //Get the ID from the url
+        const id = req.params.id;
+    
+        //Get values from the body
+        const { name, descriptions, price, stock } = req.body;
+    
+        //Try to find user on database
+        const respository = getRepository(Product);
+        let product;
+        try {
+          product = await respository.findOneOrFail(id);
+        } catch (error) {
+          //If not found, send a 404 response
+          res.status(404).send({status: 400, message: "User not found"});
+          return;
+        }
+    
+        //Validate the new values on model
+        product.name = name;
+        product.descriptions = descriptions;
+        product.price = price;
+        product.stock = stock;
+
+        const errors = await validate(product);
+        if (errors.length > 0) {
+          res.status(400).send({status: 400, message: "Error", errors: errors});
+          return;
+        }
+    
+        //Try to save, if fails, that means username already in use
+        try {
+          await respository.save(product);
+        } catch (e) {
+          res.status(409).send({status: 409, message: "username already in use"});
+          return;
+        }
+        //After all send a 204 (no content, but accepted) response
+        res.status(201).send({status: 201, message: "Product updated", data: product});
+    };
+
+    static delete = async (req: Request, res: Response) => {
+        //Get the ID from the url
+        const id = req.params.id;
+    
+        const repository = getRepository(Product);
+        let product: Product;
+        try {
+          product = await repository.findOneOrFail(id);
+        } catch (error) {
+          res.status(404).send({status: 404, message: "User not found"});
+          return;
+        }
+        repository.delete(id);
+    
+        //After all send a 204 (no content, but accepted) response
+        res.status(201).send({status: 201, message: "Product deleted."});
     };
 }
