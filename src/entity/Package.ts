@@ -2,19 +2,21 @@ import {
     Entity,
     PrimaryGeneratedColumn,
     Column,
-    Unique,
     CreateDateColumn,
-    ManyToOne,
+    OneToMany,
     UpdateDateColumn
 } from "typeorm";
-import { Length, IsNotEmpty, IsEmail, IsString, IsPhoneNumber, IsEmpty } from "class-validator";
-import { Company } from "./Company";
-import { Package } from "./Package";
+import { Length, IsNotEmpty, IsEmail, IsString, IsPhoneNumber } from "class-validator";
+import { Product } from "./Product";
   
 @Entity()
-export class Product {
+export class Package {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column()
+  @IsNotEmpty()
+  comId: number;
 
   @Column()
   @Length(4, 50)
@@ -23,7 +25,6 @@ export class Product {
 
   @Column()
   @Length(8, 1000)
-  @IsNotEmpty()
   descriptions: string;
 
   @Column()
@@ -33,15 +34,8 @@ export class Product {
   @Column()
   specialPrice: number;
 
-  @Column()
-  @IsNotEmpty()
-  stock: number;
-
-  @ManyToOne(type => Company, company => company.products)
-  company: Company;
-
-  @ManyToOne(type => Package, p => p.products, { onDelete: 'SET NULL' })
-  package: Package;
+  @OneToMany(type => Product, product => product.package)
+  products: Product[];
 
   @Column({select: false})
   @CreateDateColumn()

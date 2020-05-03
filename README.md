@@ -13,3 +13,7 @@ Or, if you don't want/need a background service you can just run:
 
 Run postgres
   psql postgres
+
+
+npm run migration:generate ...
+npm run migration:run

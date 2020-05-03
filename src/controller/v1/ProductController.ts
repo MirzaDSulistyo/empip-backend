@@ -50,12 +50,13 @@ export class ProductController {
 
     static save = async (req: Request, res: Response) => {
         //Get parameters from the body
-        let { name, descriptions, price, stock } = req.body;
+        let { name, descriptions, price, stock, specialPrice } = req.body;
         let product = new Product();
         product.name = name;
         product.descriptions = descriptions;
         product.price = price;
         product.stock = stock;
+        product.specialPrice = specialPrice;
         product.company = req.com;
 
         //Validade if the parameters are ok
@@ -70,7 +71,7 @@ export class ProductController {
         try {
           await repository.save(product);
         } catch (e) {
-          res.status(400).send({status: 400, message: "product already added."});
+          res.status(400).send({status: 400, message: "Error on creating product."});
           return;
         }
     
@@ -83,11 +84,11 @@ export class ProductController {
         const id = req.params.id;
     
         //Get values from the body
-        const { name, descriptions, price, stock } = req.body;
+        const { name, descriptions, price, stock, specialPrice } = req.body;
     
         //Try to find user on database
         const respository = getRepository(Product);
-        let product;
+        let product: Product;
         try {
           product = await respository.findOneOrFail(id);
         } catch (error) {
@@ -101,6 +102,7 @@ export class ProductController {
         product.descriptions = descriptions;
         product.price = price;
         product.stock = stock;
+        product.specialPrice = specialPrice;
 
         const errors = await validate(product);
         if (errors.length > 0) {
