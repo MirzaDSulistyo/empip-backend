@@ -75,6 +75,19 @@ export class Company {
   memberships: Membership[];
 
   @Column()
+  freeDeliveryFee: number;
+
+  @Column()
+  freeDeliveryRadius: number;
+
+  @Column()
+  freeDeliveryPerUnit: number;
+
+  @Column()
+  @Length(1, 20)
+  deliveryMeasurementUnit: string;
+
+  @Column()
   @CreateDateColumn()
   createdAt: Date;
 
