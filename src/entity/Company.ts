@@ -11,6 +11,11 @@ import {
 import { Length, IsNotEmpty, IsEmail, IsPhoneNumber } from "class-validator";
 import { User } from "../entity/User";
 import { Product } from "./Product";
+import { Service } from "./Service";
+import { Class } from "./Class";
+import { Voucher } from "./Voucher";
+import { Asset } from "./Asset";
+import { Membership } from "./Membership";
   
 @Entity()
 @Unique(["name"])
@@ -53,6 +58,21 @@ export class Company {
 
   @OneToMany(type => Product, product => product.company)
   products: Product[];
+
+  @OneToMany(type => Service, service => service.company)
+  services: Service[];
+
+  @OneToMany(type => Class, c => c.company)
+  classes: Class[];
+
+  @OneToMany(type => Asset, asset => asset.company)
+  assets: Asset[];
+
+  @OneToMany(type => Voucher, voucher => voucher.company)
+  vouchers: Voucher[];
+
+  @OneToMany(type => Membership, member => member.company)
+  memberships: Membership[];
 
   @Column()
   @CreateDateColumn()

@@ -3,15 +3,18 @@ import {
     PrimaryGeneratedColumn,
     Column,
     CreateDateColumn,
-    ManyToOne,
-    UpdateDateColumn
+    UpdateDateColumn,
+    OneToMany,
+    ManyToOne
 } from "typeorm";
 import { Length, IsNotEmpty } from "class-validator";
+import { ServiceVariant } from "./ServiceVariant";
 import { Company } from "./Company";
-import { Package } from "./Package";
   
+export type ServiceAvailableType = "anyone" | "male" | "female";
+
 @Entity()
-export class Product {
+export class Service {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -25,22 +28,18 @@ export class Product {
   @IsNotEmpty()
   descriptions: string;
 
-  @Column()
-  @IsNotEmpty()
-  price: number;
+  @Column({
+    type: "enum",
+    enum: ["anyone", "male", "female"],
+    default: "anyone"
+  })
+  available: ServiceAvailableType
 
-  @Column()
-  specialPrice: number;
+  @OneToMany(type => ServiceVariant, variant => variant.service)
+  variants: ServiceVariant[];
 
-  @Column()
-  @IsNotEmpty()
-  stock: number;
-
-  @ManyToOne(type => Company, company => company.products)
+  @ManyToOne(type => Company, company => company.services)
   company: Company;
-
-  @ManyToOne(type => Package, p => p.products, { onDelete: 'SET NULL' })
-  package: Package;
 
   @Column({select: false})
   @CreateDateColumn()

@@ -3,15 +3,14 @@ import {
     PrimaryGeneratedColumn,
     Column,
     CreateDateColumn,
-    ManyToOne,
-    UpdateDateColumn
+    UpdateDateColumn,
+    ManyToOne
 } from "typeorm";
 import { Length, IsNotEmpty } from "class-validator";
 import { Company } from "./Company";
-import { Package } from "./Package";
-  
+
 @Entity()
-export class Product {
+export class Voucher {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -30,17 +29,22 @@ export class Product {
   price: number;
 
   @Column()
-  specialPrice: number;
+  @Length(8, 1000)
+  @IsNotEmpty()
+  startDate: string;
 
   @Column()
+  @Length(8, 1000)
   @IsNotEmpty()
-  stock: number;
+  endDate: string;
 
-  @ManyToOne(type => Company, company => company.products)
+  @Column()
+  @Length(8, 1000)
+  @IsNotEmpty()
+  messages: string;
+
+  @ManyToOne(type => Company, company => company.vouchers)
   company: Company;
-
-  @ManyToOne(type => Package, p => p.products, { onDelete: 'SET NULL' })
-  package: Package;
 
   @Column({select: false})
   @CreateDateColumn()

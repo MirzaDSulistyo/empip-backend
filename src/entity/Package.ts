@@ -6,7 +6,7 @@ import {
     OneToMany,
     UpdateDateColumn
 } from "typeorm";
-import { Length, IsNotEmpty, IsEmail, IsString, IsPhoneNumber } from "class-validator";
+import { Length, IsNotEmpty } from "class-validator";
 import { Product } from "./Product";
   
 @Entity()

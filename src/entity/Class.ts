@@ -3,15 +3,18 @@ import {
     PrimaryGeneratedColumn,
     Column,
     CreateDateColumn,
-    ManyToOne,
-    UpdateDateColumn
+    UpdateDateColumn,
+    OneToMany,
+    ManyToOne
 } from "typeorm";
 import { Length, IsNotEmpty } from "class-validator";
+import { ClassSession } from "./ClassSession";
 import { Company } from "./Company";
-import { Package } from "./Package";
   
+export type ClassAvailableType = "anyone" | "male" | "female";
+
 @Entity()
-export class Product {
+export class Class {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -25,22 +28,18 @@ export class Product {
   @IsNotEmpty()
   descriptions: string;
 
-  @Column()
-  @IsNotEmpty()
-  price: number;
+  @Column({
+    type: "enum",
+    enum: ["anyone", "male", "female"],
+    default: "anyone"
+  })
+  available: ClassAvailableType
 
-  @Column()
-  specialPrice: number;
+  @OneToMany(type => ClassSession, session => session.class)
+  sessions: ClassSession[];
 
-  @Column()
-  @IsNotEmpty()
-  stock: number;
-
-  @ManyToOne(type => Company, company => company.products)
+  @ManyToOne(type => Company, company => company.classes)
   company: Company;
-
-  @ManyToOne(type => Package, p => p.products, { onDelete: 'SET NULL' })
-  package: Package;
 
   @Column({select: false})
   @CreateDateColumn()

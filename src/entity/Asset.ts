@@ -8,10 +8,9 @@ import {
 } from "typeorm";
 import { Length, IsNotEmpty } from "class-validator";
 import { Company } from "./Company";
-import { Package } from "./Package";
   
 @Entity()
-export class Product {
+export class Asset {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -36,12 +35,9 @@ export class Product {
   @IsNotEmpty()
   stock: number;
 
-  @ManyToOne(type => Company, company => company.products)
+  @ManyToOne(type => Company, company => company.assets)
   company: Company;
-
-  @ManyToOne(type => Package, p => p.products, { onDelete: 'SET NULL' })
-  package: Package;
-
+  
   @Column({select: false})
   @CreateDateColumn()
   createdAt: Date;

@@ -11,7 +11,7 @@ import { Company } from "./Company";
 import { Package } from "./Package";
   
 @Entity()
-export class Product {
+export class Membership {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -34,13 +34,13 @@ export class Product {
 
   @Column()
   @IsNotEmpty()
-  stock: number;
+  slot: number;
 
-  @ManyToOne(type => Company, company => company.products)
+  @ManyToOne(type => Company, company => company.memberships)
   company: Company;
 
-  @ManyToOne(type => Package, p => p.products, { onDelete: 'SET NULL' })
-  package: Package;
+  @Column()
+  isUnlimited: boolean;
 
   @Column({select: false})
   @CreateDateColumn()

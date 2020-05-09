@@ -3,15 +3,14 @@ import {
     PrimaryGeneratedColumn,
     Column,
     CreateDateColumn,
-    ManyToOne,
-    UpdateDateColumn
+    UpdateDateColumn,
+    ManyToOne
 } from "typeorm";
 import { Length, IsNotEmpty } from "class-validator";
-import { Company } from "./Company";
-import { Package } from "./Package";
+import { Class } from "./Class";
   
 @Entity()
-export class Product {
+export class ClassSession {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -19,11 +18,6 @@ export class Product {
   @Length(4, 50)
   @IsNotEmpty()
   name: string;
-
-  @Column()
-  @Length(8, 1000)
-  @IsNotEmpty()
-  descriptions: string;
 
   @Column()
   @IsNotEmpty()
@@ -34,13 +28,30 @@ export class Product {
 
   @Column()
   @IsNotEmpty()
-  stock: number;
+  startDate: string;
 
-  @ManyToOne(type => Company, company => company.products)
-  company: Company;
+  @Column()
+  @IsNotEmpty()
+  endDate: string;
 
-  @ManyToOne(type => Package, p => p.products, { onDelete: 'SET NULL' })
-  package: Package;
+  @Column()
+  @IsNotEmpty()
+  days: string;
+
+  @Column()
+  @IsNotEmpty()
+  startTime: string;
+
+  @Column()
+  @IsNotEmpty()
+  duration: number;
+
+  @Column()
+  @IsNotEmpty()
+  blockingDates: string;
+
+  @ManyToOne(type => Class, c => c.sessions)
+  class: Class;
 
   @Column({select: false})
   @CreateDateColumn()
