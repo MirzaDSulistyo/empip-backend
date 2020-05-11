@@ -16,22 +16,8 @@ export class ClassController {
         //   where: { company: { id: req.com.id } }
         // });
 
-        // const classes = await classRepository
-        //     .createQueryBuilder("class")
-        //     .addSelect("class.id", "id")
-        //     .addSelect("class.name", "name")
-        //     .addSelect("class.descriptions", "descriptions")
-        //     .addSelect("class.available", "available")
-        //     .addSelect("company.id", "com_id")
-        //     // .addSelect("sessions.id", "session_id")
-        //     // .addSelect("sessions.name", "session_name")
-        //     .leftJoin("class.company", "company")
-        //     .leftJoin("class.sessions", "sessions")
-        //     .where("company.id = :id", { id: req.com.id })
-        //     .getMany();
-
         const classes = await classRepository.createQueryBuilder('class')
-          .select(['sessions.id', 'sessions.name', 'sessions.price', 'class.id', 'class.name', 'class.descriptions', 'class.available'])
+          .select(['sessions.id', 'sessions.name', 'sessions.price', 'sessions.specialPrice', 'sessions.startDate', 'sessions.endDate', 'sessions.days', 'sessions.startTime', 'sessions.duration', 'sessions.blockingDates', 'class.id', 'class.name', 'class.descriptions', 'class.available'])
           .leftJoin("class.company", "company") // company is the joined table
           .leftJoin('class.sessions', 'sessions') // sessions is the joined table
           .where("company.id = :id", { id: req.com.id })
@@ -152,6 +138,45 @@ export class ClassController {
         classData.name = name;
         classData.available = available;
         classData.descriptions = descriptions;
+
+        const sessionRepository = getRepository(ClassSession);
+
+        let sessions = new Array<ClassSession>();
+        //console.log("save class log " + req.body.session.length + " " + name);
+        for (let c of req.body.session) {
+            let session = c as ClassSession;
+            //let newSession = new ClassSession();
+            //newSession.name = session.name;
+            //newSession.price = session.price;
+            //newSession.specialPrice = session.specialPrice;
+            //newSession.startDate = session.startDate;
+            //newSession.endDate = session.endDate;
+            //newSession.days = session.days;
+            //newSession.startTime = session.startTime;
+            //newSession.duration = session.duration;
+            //newSession.blockingDates = session.blockingDates;
+            
+            //console.log("save class log " + JSON.stringify(newSession));
+            console.log("save class log " + session.id);
+
+            //Validade if the parameters are ok
+            const errors = await validate(session);
+            if (errors.length > 0) {
+                res.status(400).send({status: 400, errors: errors});
+                return;
+            }
+
+            try {
+              await sessionRepository.save(session);
+            } catch (e) {
+              res.status(400).send({status: 400, message: "Error on creating sessions."});
+              return;
+            }
+
+            sessions.push(session);
+        }
+        console.log("save class log " + sessions.length);
+        classData.sessions = sessions;
 
         const errors = await validate(classData);
         if (errors.length > 0) {

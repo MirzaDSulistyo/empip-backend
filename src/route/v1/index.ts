@@ -6,6 +6,7 @@ import com from "./company";
 import box from "./package";
 import asset from "./asset";
 import classRoute from "./class";
+import classSessionRoute from "./classSession";
 
 const routes = Router();
 
@@ -16,5 +17,6 @@ routes.use("/company", com)
 routes.use("/package", box)
 routes.use("/asset", asset)
 routes.use("/class", classRoute)
+routes.use("/session", classSessionRoute)
 
 export default routes;
