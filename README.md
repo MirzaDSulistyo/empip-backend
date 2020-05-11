@@ -32,3 +32,15 @@ sudo lsof -i tcp:3000
 
 then:
 kill -9 <PID>
+
+
+
+GITHUB TWO ACCOUNT:
+$ git remote add origin https://github.com/MirzaDSulistyo/empip-backend.git
+$ git push -u origin master
+
+remote: Repository not found.
+fatal: repository 'https://github.com/MirzaDSulistyo/empip-backend.git/' not found
+
+$ git remote set-url origin git@github.com:MirzaDSulistyo/empip-backend.git
+$ git push -u origin master
