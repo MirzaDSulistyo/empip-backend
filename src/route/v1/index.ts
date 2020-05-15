@@ -7,6 +7,8 @@ import box from "./package";
 import asset from "./asset";
 import classRoute from "./class";
 import classSessionRoute from "./classSession";
+import service from "./service";
+import serviceVariant from "./serviceVariant";
 
 const routes = Router();
 
@@ -18,5 +20,7 @@ routes.use("/package", box)
 routes.use("/asset", asset)
 routes.use("/class", classRoute)
 routes.use("/session", classSessionRoute)
+routes.use("/service", service)
+routes.use("/servicevariant", serviceVariant)
 
 export default routes;

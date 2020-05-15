@@ -45,7 +45,7 @@ export class ClassController {
           });
           res.send({status: 200, data: data});
         } catch (error) {
-          res.status(404).send({status: 404, message: "Product not found."});
+          res.status(404).send({status: 404, message: "Class not found."});
         }
     };
 
