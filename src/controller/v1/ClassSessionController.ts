@@ -12,7 +12,7 @@ export class ClassSessionController {
         const sessions = await sessionRepository.find({
             relations: ["class"],
             order: {
-                id: "ASC"
+                id: "DESC"
             }
         });
 

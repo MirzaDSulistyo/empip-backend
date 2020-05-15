@@ -139,44 +139,49 @@ export class ClassController {
         classData.available = available;
         classData.descriptions = descriptions;
 
+        let sessionsBody = new Array<ClassSession>();
+        if (req.body.session != undefined) {
+          for (let c of req.body.session) {
+            let session = c as ClassSession;
+            sessionsBody.push(session);
+          }
+        }
+
         const sessionRepository = getRepository(ClassSession);
 
-        let sessions = new Array<ClassSession>();
-        //console.log("save class log " + req.body.session.length + " " + name);
-        for (let c of req.body.session) {
-            let session = c as ClassSession;
-            //let newSession = new ClassSession();
-            //newSession.name = session.name;
-            //newSession.price = session.price;
-            //newSession.specialPrice = session.specialPrice;
-            //newSession.startDate = session.startDate;
-            //newSession.endDate = session.endDate;
-            //newSession.days = session.days;
-            //newSession.startTime = session.startTime;
-            //newSession.duration = session.duration;
-            //newSession.blockingDates = session.blockingDates;
-            
-            //console.log("save class log " + JSON.stringify(newSession));
-            console.log("save class log " + session.id);
+        const sessions = await sessionRepository.find({
+          where: { class: { id: classData.id } }
+        });
 
-            //Validade if the parameters are ok
-            const errors = await validate(session);
-            if (errors.length > 0) {
-                res.status(400).send({status: 400, errors: errors});
-                return;
-            }
+        for (let s of sessions) {
+          let found = sessionsBody.find(data => data.id == s.id);
 
+          //console.log("check found session " + found.id + " " + s.id)
+
+          if (found != undefined) {
             try {
-              await sessionRepository.save(session);
+              await sessionRepository.save(s);
+              console.log("on update session success " + s.id)
             } catch (e) {
-              res.status(400).send({status: 400, message: "Error on creating sessions."});
-              return;
+              console.log("on update session error")
             }
+          } else {
+            sessionRepository.delete(s.id);
+          }
+        };
 
-            sessions.push(session);
-        }
-        console.log("save class log " + sessions.length);
-        classData.sessions = sessions;
+        for (let s of sessionsBody) {
+          console.log("check new session " + s.id)
+          if (s.id == undefined) {
+            try {
+              s.class = classData;
+              await sessionRepository.save(s);
+              console.log("on add session success " + s.id);
+            } catch (e) {
+              console.log("on add session error");
+            }
+          }
+        };
 
         const errors = await validate(classData);
         if (errors.length > 0) {
@@ -192,7 +197,12 @@ export class ClassController {
           return;
         }
         //After all send a response
-        res.status(200).send({status: 200, message: "Class updated", data: classData});
+        //res.status(200).send({status: 200, message: "Class updated", data: classData, sessions: sessions});
+        const data = await respository.findOneOrFail(classData.id, {
+          relations: ['sessions']
+        });
+
+        res.send({status: 200, message: "Class updated", data: data});
     };
 
     static delete = async (req: Request, res: Response) => {
