@@ -9,6 +9,7 @@ import classRoute from "./class";
 import classSessionRoute from "./classSession";
 import service from "./service";
 import serviceVariant from "./serviceVariant";
+import voucher from "./voucher";
 
 const routes = Router();
 
@@ -22,5 +23,6 @@ routes.use("/class", classRoute)
 routes.use("/session", classSessionRoute)
 routes.use("/service", service)
 routes.use("/servicevariant", serviceVariant)
+routes.use("/voucher", voucher)
 
 export default routes;

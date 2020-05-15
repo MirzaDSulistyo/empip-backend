@@ -6,7 +6,7 @@ import { Product } from "../../entity/Product";
 export class ProductController {
     
     static all = async (req: Request, res: Response) => {
-        //Get users from database
+        //Get products from database
         const productRepository = getRepository(Product);
 
         // const products = await productRepository.find({ 
@@ -29,7 +29,7 @@ export class ProductController {
         if (products.length == 0) {
             res.send({status: 204, message: "No content."});
         } else {
-            //Send the users object
+            //Send the products object
             res.send({status: 200, data: products});
         }
     };
@@ -38,7 +38,7 @@ export class ProductController {
         //Get the ID from the url
         const id: string = req.params.id;
     
-        //Get the user from database
+        //Get the product from database
         const repository = getRepository(Product);
         try {
           const data = await repository.findOneOrFail(id);
@@ -66,7 +66,7 @@ export class ProductController {
             return;
         }
     
-        //Try to save. If fails, the username is already in use
+        //Try to save. If fails, the product is already in use
         const repository = getRepository(Product);
         try {
           await repository.save(product);
@@ -86,14 +86,14 @@ export class ProductController {
         //Get values from the body
         const { name, descriptions, price, stock, specialPrice } = req.body;
     
-        //Try to find user on database
+        //Try to find product on database
         const respository = getRepository(Product);
         let product: Product;
         try {
           product = await respository.findOneOrFail(id);
         } catch (error) {
           //If not found, send a 404 response
-          res.status(404).send({status: 400, message: "User not found"});
+          res.status(404).send({status: 400, message: "Product not found"});
           return;
         }
     
@@ -110,11 +110,11 @@ export class ProductController {
           return;
         }
     
-        //Try to save, if fails, that means username already in use
+        //Try to save, if fails, that means product already in use
         try {
           await respository.save(product);
         } catch (e) {
-          res.status(409).send({status: 409, message: "username already in use"});
+          res.status(409).send({status: 409, message: "product already in use"});
           return;
         }
         //After all send a 204 (no content, but accepted) response
@@ -130,7 +130,7 @@ export class ProductController {
         try {
           product = await repository.findOneOrFail(id);
         } catch (error) {
-          res.status(404).send({status: 404, message: "User not found"});
+          res.status(404).send({status: 404, message: "Product not found"});
           return;
         }
         repository.delete(id);
