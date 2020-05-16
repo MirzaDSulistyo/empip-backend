@@ -44,3 +44,9 @@ fatal: repository 'https://github.com/MirzaDSulistyo/empip-backend.git/' not fou
 
 $ git remote set-url origin git@github.com:MirzaDSulistyo/empip-backend.git
 $ git push -u origin master
+
+
+Order is what users buy on the platform. Users can order package, product, service, class, voucher, asset, membership, plan.
+Order will generate an invoice number and order number.
+
+Membership is what users are signup for a plan or a memberships.

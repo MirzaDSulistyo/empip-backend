@@ -8,7 +8,6 @@ import {
 } from "typeorm";
 import { Length, IsNotEmpty } from "class-validator";
 import { Company } from "./Company";
-import { Package } from "./Package";
   
 @Entity()
 export class Membership {
@@ -32,6 +31,7 @@ export class Membership {
   @Column()
   specialPrice: number;
 
+  // slot of member available
   @Column()
   @IsNotEmpty()
   slot: number;
@@ -39,6 +39,7 @@ export class Membership {
   @ManyToOne(type => Company, company => company.memberships)
   company: Company;
 
+  // is this membership can take unlimited member
   @Column()
   isUnlimited: boolean;
 

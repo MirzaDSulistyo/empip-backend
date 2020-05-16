@@ -10,6 +10,7 @@ import {
 import { Length, IsNotEmpty, IsEmail } from "class-validator";
 import * as bcrypt from "bcryptjs";
 import { Company } from "./Company";
+import { Order } from "./Order";
   
 @Entity()
 @Unique(["email"])
@@ -35,6 +36,9 @@ export class User {
 
   @OneToMany(type => Company, company => company.user)
   companies: Company[];
+
+  @OneToMany(type => Order, order => order.user)
+  orders: Order[];
 
   @Column()
   @CreateDateColumn()

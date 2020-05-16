@@ -74,16 +74,16 @@ export class Company {
   @OneToMany(type => Membership, member => member.company)
   memberships: Membership[];
 
-  @Column()
+  @Column({nullable: true})
   freeDeliveryFee: number;
 
-  @Column()
+  @Column({nullable: true})
   freeDeliveryRadius: number;
 
-  @Column()
+  @Column({nullable: true})
   freeDeliveryPerUnit: number;
 
-  @Column()
+  @Column({nullable: true})
   @Length(1, 20)
   deliveryMeasurementUnit: string;
 

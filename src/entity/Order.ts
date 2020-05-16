@@ -18,6 +18,7 @@ import { Asset } from "./Asset";
 import { Voucher } from "./Voucher";
 import { Plan } from "./Plan";
 import { Membership } from "./Membership";
+import { User } from "./User";
 
 export type OrderType = "1#sameday" | "2#scheduled" | "3#takeout" | "4#booking" | "5#voucher" | "6#class" | "7#plan" | "8#dinein" | "9#rent";
   
@@ -25,6 +26,11 @@ export type OrderType = "1#sameday" | "2#scheduled" | "3#takeout" | "4#booking" 
 export class Order {
   @PrimaryGeneratedColumn()
   id: number;
+
+  //YY-MM-DD + 8 char 0-9A-Z
+  @Column()
+  @IsNotEmpty()
+  invoiceNumber: string;
 
   @Column()
   @Length(4, 50)
@@ -94,6 +100,30 @@ export class Order {
   @Column()
   @IsNotEmpty()
   address: string;
+
+  @ManyToOne(type => User, user => user.orders)
+  user: User;
+
+  @Column()
+  isMembershipOrder: boolean;
+
+  @Column({nullable: true})
+  orderTotal: number;
+
+  @Column({nullable: true})
+  subTotal: number;
+
+  @Column({nullable: true})
+  latitude: string;
+
+  @Column({nullable: true})
+  longitude: string;
+
+  @Column()
+  status: string;
+
+  @Column({nullable: true})
+  deliveryFee: number;
 
   @Column({select: false})
   @CreateDateColumn()
