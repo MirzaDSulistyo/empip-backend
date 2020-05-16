@@ -11,6 +11,7 @@ import service from "./service";
 import serviceVariant from "./serviceVariant";
 import voucher from "./voucher";
 import order from "./order";
+import membership from "./membership";
 
 const routes = Router();
 
@@ -26,5 +27,6 @@ routes.use("/service", service)
 routes.use("/servicevariant", serviceVariant)
 routes.use("/voucher", voucher)
 routes.use("/order", order)
+routes.use("/membership", membership)
 
 export default routes;
